@@ -51,7 +51,7 @@
 						<span class="btn-show-pass">
 							<i class="zmdi zmdi-eye"></i>
 						</span>
-						<form:input class="input100 has-val" path="password"/>
+						<form:password class="input100 has-val" path="password"/>
 						<span class="focus-input100" data-placeholder="Password"></span>
 					</div>
 					
@@ -59,7 +59,7 @@
 						<span class="btn-show-pass">
 							<i class="zmdi zmdi-eye"></i>
 						</span>
-						<form:input class="input100 has-val" path="repeatPassword"/>
+						<form:password class="input100 has-val" path="repeatPassword"/>
 						<span class="focus-input100" data-placeholder="Repeat Password"></span>
 					</div>
 

@@ -2,7 +2,9 @@ package com.itbulls.learnit.onlinestore.persistence.dto.converters;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,12 +35,14 @@ public class UserDtoToUserConverter {
 		user.setId(userDto.getId());
 		user.setFirstName(userDto.getFirstName());
 		user.setLastName(userDto.getLastName());
-		if (userDto.getRoleDto() != null) 
-			user.setRoleName(userDto.getRoleDto().getRoleName());
-		user.setMoney(userDto.getMoney().doubleValue());
+		user.setRoles(roleConverter.convertRoleDtosToRoles(userDto.getRoles())); // here
+		if (userDto.getMoney() != null) {
+			user.setMoney(userDto.getMoney().doubleValue());
+		}
 		user.setCreditCard(userDto.getCreditCard());
 		user.setPartnerCode(userDto.getPartnerCode());
 		user.setReferrerUser(convertUserDtoToUser(userDto.getReferrerUser()));
+		user.setIsEnabled(userDto.isEnabled());
 		
 		return user;
 	}
@@ -52,12 +56,15 @@ public class UserDtoToUserConverter {
 			userDto.setFirstName(user.getFirstName());
 			userDto.setLastName(user.getLastName());
 			userDto.setPassword(user.getPassword());
-			userDto.setRoleDto(roleConverter.convertRoleNameToRoleDtoWithOnlyRoleName(user.getRoleName()));
+			userDto.setRoles(roleConverter.convertRolesToRoleDtos(user.getRoles())); // TODO - comment this
 			userDto.setMoney(BigDecimal.valueOf(user.getMoney()));
 			userDto.setCreditCard(user.getCreditCard());
 			userDto.setPartnerCode(user.getPartnerCode());
 			userDto.setReferrerUser(convertUserToUserDto(user.getReferrerUser()));
+			userDto.setIsEnabled(user.isEnabled());
+			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@ " + userDto.getRoles());
 		}
+		
 		return userDto;
 	}
 
@@ -68,6 +75,14 @@ public class UserDtoToUserConverter {
 			users.add(convertUserDtoToUser(userDto));
 		}
 		return users;
+	}
+
+	public List<UserDto> convertUsersToUserDtos(List<User> users) {
+		List<UserDto> userDtos = new ArrayList<>();
+		for (User user : users) {
+			userDtos.add(convertUserToUserDto(user));
+		}
+		return userDtos;
 	}
 
 }

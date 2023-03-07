@@ -12,6 +12,10 @@
 	<artifactId>online-store.persistence</artifactId>
 	<version>${project.version}</version>
 	<packaging>jar</packaging>
+	
+	<properties>
+		<spring.security.version>5.8.1</spring.security.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -50,6 +54,12 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>6.2.5.Final</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring.security.version}</version>
 		</dependency>
 
 

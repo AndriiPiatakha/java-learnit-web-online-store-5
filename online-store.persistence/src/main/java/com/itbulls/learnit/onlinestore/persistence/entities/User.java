@@ -1,5 +1,7 @@
 package com.itbulls.learnit.onlinestore.persistence.entities;
 
+import java.util.List;
+
 public interface User {
 	
 	String getFirstName();
@@ -18,9 +20,6 @@ public interface User {
 	void setPassword(String newPassword);
 	void setEmail(String newEmail);
 	
-	String getRoleName();
-	void setRoleName(String roleName);
-	
 	double getMoney();
 	void setMoney(double money);
 	
@@ -32,6 +31,11 @@ public interface User {
 	
 	void setReferrerUser(User convertUserDtoToUser);
 	User getReferrerUser();
+	
+	void setRoles(List<Role> convertRoleDtosToRoles);
+	List<Role> getRoles();
+	boolean isEnabled();
+	void setIsEnabled(boolean isEnabled);
 	
 	
 }

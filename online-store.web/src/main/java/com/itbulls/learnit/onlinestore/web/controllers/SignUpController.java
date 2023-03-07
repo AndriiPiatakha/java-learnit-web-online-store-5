@@ -3,9 +3,7 @@ package com.itbulls.learnit.onlinestore.web.controllers;
 import static com.itbulls.learnit.onlinestore.web.filters.PartnerCodeFilter.PARTNER_CODE_COOKIE_NAME;
 
 import java.util.List;
-import java.util.Locale;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -15,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,7 +28,6 @@ import com.itbulls.learnit.onlinestore.core.services.Validator;
 import com.itbulls.learnit.onlinestore.core.services.impl.CorePasswordValidator;
 import com.itbulls.learnit.onlinestore.persistence.entities.User;
 import com.itbulls.learnit.onlinestore.persistence.entities.impl.DefaultUser;
-import com.itbulls.learnit.onlinestore.web.utils.PBKDF2WithHmacSHA1EncryptionService;
 
 @Controller
 @RequestMapping("/signup")
@@ -47,7 +45,7 @@ public class SignUpController {
 	private MessageSource messageSource;
 	
 	@Autowired
-	private PBKDF2WithHmacSHA1EncryptionService encryptionService;
+	private PasswordEncoder passwordEncoder;
 	
 	@GetMapping
 	public String doGet(Model model) {
@@ -78,7 +76,7 @@ public class SignUpController {
 			return "signup";
 		}
 		
-		user.setPassword(encryptionService.generatePasswordWithSaltAndHash(notEncryptedPassword));
+		user.setPassword(passwordEncoder.encode(notEncryptedPassword));
 		
 		List<String> errorMessages = passValidator.validate(notEncryptedPassword);
 		if (errorMessages.size() != 0) {
@@ -101,6 +99,7 @@ public class SignUpController {
 			LOGGER.info("Partner code {} is found in cookie", partnerCode);
 		}
 		
+		user.setIsEnabled(true);
 		userFacade.registerUser(user, partnerCode);
 		LOGGER.info("User with email {} is registered successfully", user.getEmail());
 		return "redirect:/signin";

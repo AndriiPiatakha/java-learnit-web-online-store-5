@@ -22,10 +22,6 @@
 					<td>${loggedInUser.money}</td>
 				</tr>
 				<tr>
-					<td><b>Role:</b></td>
-					<td>${loggedInUser.roleName}</td>
-				</tr>
-				<tr>
 					<td><b>Partner Code:</b></td>
 					<td>${loggedInUser.partnerCode}</td>
 				</tr>

@@ -1,6 +1,9 @@
 package com.itbulls.learnit.onlinestore.persistence.entities.impl;
 
+import com.itbulls.learnit.onlinestore.persistence.entities.Role;
 import com.itbulls.learnit.onlinestore.persistence.entities.User;
+
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -29,13 +32,15 @@ public class DefaultUser implements User {
 	
 	private String repeatPassword;
 	
-	private String roleName;
 	private double money;
 	private String creditCard;
 
 	private String partnerCode;
 
 	private User referrerUser;
+	private List<Role> roles;
+
+	private boolean isEnabled;
 
 	{
 		id = ++userCounter;
@@ -141,16 +146,6 @@ public class DefaultUser implements User {
 		this.id = id;
 	}
 
-	@Override
-	public String getRoleName() {
-		return this.roleName;
-	}
-
-	@Override
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
-	}
-	
 	public double getMoney() {
 		return money;
 	}
@@ -192,6 +187,26 @@ public class DefaultUser implements User {
 
 	public void setRepeatPassword(String repeatPassword) {
 		this.repeatPassword = repeatPassword;
+	}
+
+	@Override
+	public void setRoles(List<Role> convertRoleDtosToRoles) {
+		this.roles = convertRoleDtosToRoles;
+	}
+
+	@Override
+	public List<Role> getRoles() {
+		return this.roles;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return isEnabled;
+	}
+
+	@Override
+	public void setIsEnabled(boolean isEnabled) {
+		this.isEnabled = isEnabled;
 	}
 	
 }

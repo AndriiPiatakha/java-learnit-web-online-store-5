@@ -3,13 +3,18 @@ package com.itbulls.learnit.onlinestore.persistence.dto;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.List;
 
 @Entity(name = "user")
 public class UserDto {
@@ -27,9 +32,17 @@ public class UserDto {
 	@Column(name = "email", unique = true, length = 50)
 	private String email;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "fk_user_role")
-	private RoleDto roleDto;
+	@ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable( 
+        name = "users_roles", 
+        joinColumns = @JoinColumn(
+          name = "user_id", referencedColumnName = "id"), 
+        inverseJoinColumns = @JoinColumn(
+          name = "role_id", referencedColumnName = "id")) 
+    private List<RoleDto> roles;
+	
+	@Column(name = "enabled")
+	private boolean isEnabled;
 	
 	@Column(name = "money")
 	private BigDecimal money;
@@ -70,12 +83,6 @@ public class UserDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public RoleDto getRoleDto() {
-		return roleDto;
-	}
-	public void setRoleDto(RoleDto roleDto) {
-		this.roleDto = roleDto;
-	}
 	public BigDecimal getMoney() {
 		return money;
 	}
@@ -106,13 +113,20 @@ public class UserDto {
 	public String getPartnerCode() {
 		return this.partnerCode;
 	}
-	@Override
-	public String toString() {
-		return "UserDto [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", roleDto=" + roleDto + ", money=" + money + ", creditCard=" + creditCard + ", password=" + password
-				+ ", partnerCode=" + partnerCode + ", referrerUser=" + referrerUser + "]";
+	public List<RoleDto> getRoles() {
+		return roles;
 	}
-	
-	
+	public void setRoles(List<RoleDto> roles) {
+		this.roles = roles;
+	}
+	public boolean isEnabled() {
+		return isEnabled;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public void setIsEnabled(boolean enabled) {
+		this.isEnabled = enabled;
+	}
 	
 }

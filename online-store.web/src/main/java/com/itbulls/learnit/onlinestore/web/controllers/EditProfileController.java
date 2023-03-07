@@ -1,15 +1,13 @@
 package com.itbulls.learnit.onlinestore.web.controllers;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +18,6 @@ import com.itbulls.learnit.onlinestore.core.facades.UserFacade;
 import com.itbulls.learnit.onlinestore.core.services.Validator;
 import com.itbulls.learnit.onlinestore.core.services.impl.CorePasswordValidator;
 import com.itbulls.learnit.onlinestore.persistence.entities.User;
-import com.itbulls.learnit.onlinestore.web.utils.PBKDF2WithHmacSHA1EncryptionService;
 
 @Controller
 @RequestMapping("/edit-profile")
@@ -36,7 +33,7 @@ public class EditProfileController {
 	private MessageSource messageSource;
 	
 	@Autowired
-	private PBKDF2WithHmacSHA1EncryptionService encryptionService;
+	private PasswordEncoder passwordEncoder;
 	
 	@GetMapping
 	public String doGet(HttpSession session) {
@@ -67,7 +64,7 @@ public class EditProfileController {
 			return "redirect:/edit-profile";
 		}
 		
-		if (!encryptionService.validatePassword(password, loggedInUser.getPassword())) {
+		if (!passwordEncoder.matches(password, loggedInUser.getPassword())) {
 			session.setAttribute("errMsg", messageSource.getMessage("signup.err.msg.old.password.wrong", null, LocaleContextHolder.getLocale()));
 			return "redirect:/edit-profile";
 		}
@@ -88,7 +85,7 @@ public class EditProfileController {
 		}
 		
 		if (newPasswordParameter != null && !newPasswordParameter.isEmpty()) {
-			user.setPassword(encryptionService.generatePasswordWithSaltAndHash(newPasswordParameter));
+			user.setPassword(passwordEncoder.encode(newPasswordParameter));
 		}
 	
 		userFacade.updateUser(user);

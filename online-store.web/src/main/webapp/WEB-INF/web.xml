@@ -19,26 +19,6 @@ http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
 		<welcome-file>homepage</welcome-file>
 	</welcome-file-list>
 
-	
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>test-auth</web-resource-name>
-			<url-pattern>/test-auth</url-pattern>
-			<http-method>GET</http-method>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>client</role-name>
-		</auth-constraint>
-
-		<user-data-constraint>
-			<!-- transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
-			<transport-guarantee>NONE</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
-
-	<login-config>
-		<auth-method>BASIC</auth-method>
-	</login-config>
 
 	<session-config>
 		<session-timeout>15</session-timeout>

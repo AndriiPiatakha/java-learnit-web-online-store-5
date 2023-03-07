@@ -2174,9 +2174,14 @@ html .ui-button.ui-state-disabled:active {
 
 [type="checkbox"]:not(:checked),
 [type="checkbox"]:checked {
+	/*
 	position: absolute;
 	left: -9999px;
 	opacity: 0;
+	*/
+    height: 16px;
+    width: 16px;
+	
 }
 
 [type="checkbox"].filled-in:checked.chk-col-blue+label:after {
